@@ -79,6 +79,14 @@ class HandleRequests(BaseHTTPRequestHandler):
             else:
                 response = f"{get_all_employees()}"
 
+        # CUSTOMERS RESOURCE
+        if resource == "customers":
+            if id is not None:
+                response = f"{get_single_customer(id)}"
+
+            else:
+                response = f"{get_all_customers()}"
+
         self.wfile.write(response.encode())
 
 
