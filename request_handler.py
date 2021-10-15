@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from animals import get_all_animals, get_single_animal
-# from animals import get_all_animals, get_single_animal
-# from animals import get_all_animals, get_single_animal
+from animals import get_all_employees, get_single_employee
+from animals import get_all_locations, get_single_location
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -54,12 +54,29 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Parse the URL and capture the tuple that is returned
         (resource, id) = self.parse_url(self.path)
 
+        # ANIMALS RESOURCE
         if resource == "animals":
             if id is not None:
                 response = f"{get_single_animal(id)}"
 
             else:
                 response = f"{get_all_animals()}"
+
+        # LOCATIONS RESOURCE
+        if resource == "locations":
+            if id is not None:
+                response = f"{get_single_location(id)}"
+
+            else:
+                response = f"{get_all_locations()}"
+
+        # EMPLOYEES RESOURCE
+        if resource == "employees":
+            if id is not None:
+                response = f"{get_single_employee(id)}"
+
+            else:
+                response = f"{get_all_employees()}"
 
         self.wfile.write(response.encode())
 

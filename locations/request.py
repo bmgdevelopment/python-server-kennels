@@ -1,4 +1,6 @@
 # LOCATIONS REQUEST.PY
+# This file provides the information that will later be requested
+
 LOCATIONS = [
     {
       "id": 1,

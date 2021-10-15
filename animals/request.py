@@ -1,4 +1,6 @@
 # ANIMALS REQUEST.PY
+# This file provides the information that will later be requested
+
 ANIMALS = [
     {
         "id": 1,

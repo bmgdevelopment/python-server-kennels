@@ -1,4 +1,6 @@
 # EMPLOYEES REQUEST.PY
+# This file provides the information that will later be requested
+
 EMPLOYEES = [
     {
       "id": 1,
