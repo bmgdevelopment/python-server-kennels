@@ -1,9 +1,6 @@
 # CUSTOMERS REQUEST.PY
 # This file provides the information that will later be requested
 
-from animals import request
-
-
 CUSTOMERS = [
     {
       "id": 1,
@@ -76,3 +73,12 @@ def delete_customer(id):
 
   if customer_index >= 0:
     CUSTOMERS.pop(customer_index)
+
+# UPDATE CUSTOMER
+# ----------------
+def update_customer(id, new_customer):
+  for index, customer in enumerate(CUSTOMERS):
+    if customer["id"] == id:
+      CUSTOMERS[index] = new_customer
+      break
+

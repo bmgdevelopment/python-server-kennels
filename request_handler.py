@@ -1,8 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from animals import get_all_animals, get_single_animal, create_animal, delete_animal, update_animal
-from locations import get_all_locations, get_single_location, create_location, delete_location
-from customers import get_all_customers, get_single_customer, create_customer, delete_customer
-from employees import get_all_employees, get_single_employee, create_employee, delete_employee
+from locations import get_all_locations, get_single_location, create_location, delete_location, update_location
+from customers import get_all_customers, get_single_customer, create_customer, delete_customer, update_customer
+from employees import get_all_employees, get_single_employee, create_employee, delete_employee, update_employee
 import json
 
 # Here's a class. It inherits from another class.
@@ -186,15 +186,32 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Encode the new animal and send in response
             self.wfile.write("".encode())
 
-
-        # EDIT/DELETE ? FROM LIST
+        # EDIT/DELETE CUSTOMER FROM LIST
         # -----------------------------
-        # Delete a single ? from the list
-        # if resource == "?s":
-        #     update_?(id, post_body)
+        # Delete a single customer from the list
+        if resource == "customers":
+            update_customer(id, post_body)
 
-        # # Encode the new ? and send in response
-        #     self.wfile.write("".encode())
+        # Encode the new customer and send in response
+            self.wfile.write("".encode())
+
+        # EDIT/DELETE EMPLOYEE FROM LIST
+        # -----------------------------
+        # Delete a single employee from the list
+        if resource == "employees":
+            update_employee(id, post_body)
+
+        # Encode the new employee and send in response
+            self.wfile.write("".encode())
+
+        # EDIT/DELETE LOCATION FROM LIST
+        # -----------------------------
+        # Delete a single location from the list
+        if resource == "locations":
+            update_location(id, post_body)
+
+        # Encode the new location and send in response
+            self.wfile.write("".encode())
 
 
     def do_DELETE(self):
