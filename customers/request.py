@@ -25,6 +25,13 @@ CUSTOMERS = [
       "address": "1037 Hiwnon Lane",
       "animalId": 3,
       "email": "wilenuehsen@me.com"
+    },
+    {
+      "id": 4,
+      "name": "TEST",
+      "address": "1037 Test Lane",
+      "animalId": 4,
+      "email": "test@me.com"
     }
 ]
 
@@ -48,7 +55,6 @@ def get_all_customers():
 
 # CREATE A CUSTOMER
 # ------------------
-
 def create_customer(customer):
   max_id = CUSTOMERS[-1]["id"]
   new_id = max_id + 1
