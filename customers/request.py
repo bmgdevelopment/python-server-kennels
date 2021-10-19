@@ -25,13 +25,6 @@ CUSTOMERS = [
       "address": "1037 Hiwnon Lane",
       "animalId": 3,
       "email": "wilenuehsen@me.com"
-    },
-    {
-      "id": 4,
-      "name": "Brittany Garrett",
-      "address": "3720 Semeway Road",
-      "animalId": 7,
-      "email": "brittanygarrett@me.com"
     }
 ]
 
@@ -51,3 +44,18 @@ def get_single_customer(id):
 # -------------------------------------
 def get_all_customers():
     return CUSTOMERS
+
+
+# CREATE A CUSTOMER
+# ------------------
+
+def create_customer(customer):
+  max_id = CUSTOMERS[-1]["id"]
+
+  new_id = max_id + 1
+
+  customer["id"] = new_id
+
+  CUSTOMERS.append(customer)
+
+  return customer
