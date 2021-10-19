@@ -16,11 +16,6 @@ LOCATIONS = [
       "name": "Nashville East",
       "address": "7294 Eilems Road",
       "id": 3
-    },
-    {
-      "id": 4,
-      "name": "Testing Location",
-      "address": "123 FAKE ST"
     }
 ]
 
@@ -43,3 +38,18 @@ def get_single_location(id):
 def get_all_locations():
 
     return LOCATIONS
+
+
+# CREATE NEW LOCATION
+# --------------------
+def create_location(location):
+
+  max_id = LOCATIONS[-1]["id"]
+
+  new_id = max_id + 1
+
+  location["id"] = new_id
+
+  LOCATIONS.append(location)
+
+  return location
