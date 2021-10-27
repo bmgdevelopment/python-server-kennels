@@ -30,7 +30,7 @@ ANIMALS = [
         "customerId": 1,
         "status": "Admitted"
     },
-      {
+    {
         "id": 4,
         "name": "TEST",
         "species": "TEST",
@@ -42,19 +42,59 @@ ANIMALS = [
 
 
 # Function with a single parameter
+# def get_single_animal(id):
+#     # Variable to hold the found animal, if it exists
+#     requested_animal = None
+
+#     # Iterate the ANIMALS list above. Very similar to the
+#     # for..of loops you used in JavaScript.
+#     for animal in ANIMALS:
+#         # Dictionaries in Python use [] notation to find a key
+#         # instead of the dot notation that JavaScript used.
+#         if animal["id"] == id:
+#             requested_animal = animal
+
+#     return requested_animal
+
 def get_single_animal(id):
-    # Variable to hold the found animal, if it exists
-    requested_animal = None
+    with sqlite3.connect("./kennel.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-    # Iterate the ANIMALS list above. Very similar to the
-    # for..of loops you used in JavaScript.
-    for animal in ANIMALS:
-        # Dictionaries in Python use [] notation to find a key
-        # instead of the dot notation that JavaScript used.
-        if animal["id"] == id:
-            requested_animal = animal
+        # Use a ? parameter to inject a variable's value
+        # into the SQL statement.
+        db_cursor.execute("""
+        SELECT
+            a.id,
+            a.name,
+            a.breed,
+            a.status,
+            a.location_id,
+            a.customer_id
+        FROM animal a
+        WHERE a.id = ?
+        """, (id, ))
 
-    return requested_animal
+        # -- Get only the animal rows where the `id` field value is 3
+        # SELECT 
+        #     a.id, 
+        #     a.name, 
+        #     a.breed, 
+        #     a.status, 
+        #     a.location_id, 
+        #     a.customer_id 
+        # FROM animal a 
+        # WHERE a.id = 3 
+
+        # Load the single result into memory
+        data = db_cursor.fetchone()
+
+        # Create an animal instance from the current row
+        animal = Animal(data['id'], data['name'], data['breed'],
+                        data['status'], data['location_id'],
+                        data['customer_id'])
+
+        return json.dumps(animal.__dict__)
 
 
 # def get_all_animals():
@@ -135,6 +175,7 @@ def delete_animal(id):
     if animal_index >= 0:
         ANIMALS.pop(animal_index)
 
+
 def update_animal(id, new_animal):
     # Iterate the ANIMALS list, but use enumerate() so that
     # you can access the index value of each item.
@@ -143,4 +184,3 @@ def update_animal(id, new_animal):
             # Found the animal. Update the value.
             ANIMALS[index] = new_animal
             break
-
