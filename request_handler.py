@@ -9,6 +9,7 @@ import json
 # For now, think of a class as a container for functions that
 # work together for a common purpose. In this case, that
 # common purpose is to respond to HTTP requests from a client.
+
 class HandleRequests(BaseHTTPRequestHandler):
 
     def parse_url(self, path):
