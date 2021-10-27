@@ -31,7 +31,7 @@ CREATE TABLE 'Employee' (
     FOREIGN KEY('location_id')  REFERENCES 'Location'('id')
 );
 
-INSERT INTO 'Location' VALUES (null, 'Nashville North' "64 Washington Heights");
+INSERT INTO 'Location' VALUES (null, 'Nashville North', "64 Washington Heights");
 INSERT INTO 'Location' VALUES (null, 'Nashville South', "101 Penn Ave");
 
 INSERT INTO 'Employee' VALUES (null, "Madi Peper", "35498 Madison Ave", 1);
