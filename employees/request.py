@@ -1,6 +1,11 @@
 # EMPLOYEES REQUEST.PY
 # This file provides the information that will later be requested
 
+import sqlite3
+import json
+
+from models import Employee
+
 EMPLOYEES = [
     {
       "id": 1,
@@ -51,9 +56,33 @@ def get_single_employee(id):
 
 # GET ALL EMPLOYEES AS AN ITERABLE LIST
 # --------------------------------------
-def get_all_employees():
-    return EMPLOYEES
+# def get_all_employees():
+#     return EMPLOYEES
 
+def get_all_employees():
+    with sqlite3.connect("./kennel.db") as conn:
+
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            a.id,
+            a.name,
+            a.address,
+            a.location_id
+        FROM employee a
+        """)
+
+        employees = []
+
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            employee = Employee(row['id'], row['name'], row['address'], row['location_id'])
+            employees.append(employee.__dict__)
+
+    return json.dumps(employees)
 
 # CREATE AN EMPLOYEE
 # -------------------
