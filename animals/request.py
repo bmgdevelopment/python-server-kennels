@@ -75,17 +75,6 @@ def get_single_animal(id):
         WHERE a.id = ?
         """, (id, ))
 
-        # -- Get only the animal rows where the `id` field value is 3
-        # SELECT 
-        #     a.id, 
-        #     a.name, 
-        #     a.breed, 
-        #     a.status, 
-        #     a.location_id, 
-        #     a.customer_id 
-        # FROM animal a 
-        # WHERE a.id = 3 
-
         # Load the single result into memory
         data = db_cursor.fetchone()
 

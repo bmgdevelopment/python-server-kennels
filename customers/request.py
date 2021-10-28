@@ -1,6 +1,11 @@
 # CUSTOMERS REQUEST.PY
 # This file provides the information that will later be requested
 
+import sqlite3
+import json
+
+from models import Customer
+
 CUSTOMERS = [
     {
       "id": 1,
@@ -46,9 +51,35 @@ def get_single_customer(id):
 
 # GET ALL CUSTOMERS AS AN ITERABLE LIST
 # -------------------------------------
-def get_all_customers():
-    return CUSTOMERS
+# def get_all_customers():
+#     return CUSTOMERS
 
+def get_all_customers():
+
+  with sqlite3.connect("./kennel.db") as conn: 
+
+      conn.row_factory = sqlite3.Row
+      db_cursor = conn.cursor()
+
+      db_cursor.execute("""
+      SELECT
+        a.id,
+        a.name,
+        a.address,
+        a.email,
+        a.password
+      FROM customer a
+      """)
+
+      customers = []
+
+      dataset = db_cursor.fetchall()
+
+      for row in dataset:
+        customer = Customer(row['id'], row['name'], row['address'], row['email'], row['password'])
+        customers.append(customer.__dict__)
+
+  return json.dumps(customers)
 
 # CREATE A CUSTOMER
 # ------------------
