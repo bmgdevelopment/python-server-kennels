@@ -43,7 +43,7 @@ EMPLOYEES = [
 # -----------------------
 def get_single_employee(id):
 
-    request_employee = None
+    requested_employee = None
     
     for employee in EMPLOYEES:
 
@@ -51,13 +51,42 @@ def get_single_employee(id):
 
             requested_employee = employee
 
-        return request_employee 
+        return requested_employee 
+
+
+
+# def get_single_employee(id):
+#     with sqlite3.connect("./kennel.db") as conn:
+#         conn.row_factory = sqlite3.Row
+#         db_cursor = conn.cursor()
+#
+#         # Use a ? parameter to inject a variable's value
+#         # into the SQL statement.
+#         db_cursor.execute("""
+#         SELECT
+#             a.id,
+#             a.name,
+#             a.address,
+#             a.location_id
+#         FROM employee a
+#         WHERE a.id = ?
+#         """, (id, ))
+#
+#         # Load the single result into memory
+#         data = db_cursor.fetchone()
+#
+#         # Create an employee instance from the current row
+#         employee = Employee(data['id'], data['name'], data['address'],
+#                         data['location_id'])
+#
+#         return json.dumps(employee.__dict__)
 
 
 # GET ALL EMPLOYEES AS AN ITERABLE LIST
 # --------------------------------------
 # def get_all_employees():
 #     return EMPLOYEES
+
 
 def get_all_employees():
     with sqlite3.connect("./kennel.db") as conn:
@@ -74,15 +103,21 @@ def get_all_employees():
         FROM employee a
         """)
 
+
         employees = []
+
 
         dataset = db_cursor.fetchall()
 
+
         for row in dataset:
-            employee = Employee(row['id'], row['name'], row['address'], row['location_id'])
+            employee = Employee(row['id'], row['name'], row['address'],
+                            row['location_id'])
             employees.append(employee.__dict__)
 
+
     return json.dumps(employees)
+
 
 # CREATE AN EMPLOYEE
 # -------------------
