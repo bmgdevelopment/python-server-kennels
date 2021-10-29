@@ -89,11 +89,14 @@ def get_single_employee(id):
 
 
 def get_all_employees():
+    # Open a connection to the database
     with sqlite3.connect("./kennel.db") as conn:
 
+        # Just use these. It's a Black Box.
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
+        # Write the SQL query to get the information you want
         db_cursor.execute("""
         SELECT
             a.id,
@@ -103,19 +106,24 @@ def get_all_employees():
         FROM employee a
         """)
 
-
+        # Initialize an empty list to hold all animal representations
         employees = []
 
-
+        # Convert rows of data into a Python list
         dataset = db_cursor.fetchall()
 
-
+        # Iterate list of data returned from database
         for row in dataset:
-            employee = Employee(row['id'], row['name'], row['address'],
-                            row['location_id'])
+
+            # Create an employee instance from the current row.
+            # Note that the database fields are specified in
+            # exact order of the parameters defined in the
+            # Employee class above.
+            employee = Employee(row['id'], row['name'], row['address'], row['location_id'])
+
             employees.append(employee.__dict__)
 
-
+    # Use `json` package to properly serialize list as JSON
     return json.dumps(employees)
 
 
@@ -144,6 +152,7 @@ def delete_employee(id):
 
   if employee_index >= 0:
     EMPLOYEES.pop(employee_index)
+
 
 # UPDATE EMPLOYEE
 # ---------------
