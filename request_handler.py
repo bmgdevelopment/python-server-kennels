@@ -60,14 +60,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers(200)
-
         response = {}
 
         # Parse URL and store entire tuple in a variable
         parsed = self.parse_url(self.path)
 
-        # Response from parse_url() is a tuple with 2
-        # items in it, which means the request was for
+        # Response from parse_url() is a tuple with 2 items in it, which means the request was for
         # `/animals` or `/animals/2`
         if len(parsed) == 2:
             ( resource, id ) = parsed
@@ -83,8 +81,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_customers()}"
 
-        # Response from parse_url() is a tuple with 3
-        # items in it, which means the request was for
+        # Response from parse_url() is a tuple with 3 items in it, which means the request was for
         # `/resource?parameter=value`
         elif len(parsed) == 3:
             ( resource, key, value ) = parsed
@@ -94,7 +91,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             # email as a filtering value?
             if key == "email" and resource == "customers":
                 response = get_customers_by_email(value)
-
+            
         self.wfile.write(response.encode())
 
     # Here's a method on the class that overrides the parent's method.

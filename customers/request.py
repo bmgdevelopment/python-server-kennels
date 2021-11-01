@@ -1,12 +1,12 @@
 # CUSTOMERS REQUEST.PY
 # This file provides the information that will later be requested
 
-import sqlite3
-import json
+import sqlite3 
+import json 
 
-from models import Customer
+from models import Customer 
 
-CUSTOMERS = [
+CUSTOMERS = [ 
     {
       "id": 1,
       "name": "Hannah Hall",
