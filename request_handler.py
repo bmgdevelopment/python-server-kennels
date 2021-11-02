@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from animals import get_all_animals, get_single_animal, create_animal, delete_animal, update_animal
+from animals import get_all_animals, get_single_animal, create_animal, delete_animal, update_animal, get_animals_by_locationId
 from locations import get_all_locations, get_single_location, create_location, delete_location, update_location
 from customers import get_all_customers, get_single_customer, create_customer, delete_customer, update_customer, get_customers_by_email
 from employees import get_all_employees, get_single_employee, create_employee, delete_employee, update_employee
@@ -89,54 +89,17 @@ class HandleRequests(BaseHTTPRequestHandler):
             # Is the resource `customers` and was there a
             # query parameter that specified the customer
             # email as a filtering value?
+            # http://localhost:8088/customers?email=jenna@solis.com
+            # http://localhost:8088/animals?location_id=1
+
+
             if key == "email" and resource == "customers":
                 response = get_customers_by_email(value)
+
+            elif key == "location_id" and resource == "animals": #must use the exact key name from URL!
+                response = get_animals_by_locationId(value)
             
         self.wfile.write(response.encode())
-
-    # Here's a method on the class that overrides the parent's method.
-    # It handles any GET request.
-    # def do_GET(self): 
-    #     self._set_headers(200) 
-    #     response = {}  # Default response
-
-    #     # Parse the URL and capture the tuple that is returned
-    #     (resource, id) = self.parse_url(self.path) 
-
-    #     # ANIMALS RESOURCE
-    #     if resource == "animals": 
-    #         if id is not None: 
-    #             response = f"{get_single_animal(id)}" 
-
-    #         else: 
-    #             response = f"{get_all_animals()}" 
-
-    #     # LOCATIONS RESOURCE
-    #     if resource == "locations": 
-    #         if id is not None: 
-    #             response = f"{get_single_location(id)}" 
-
-    #         else: 
-    #             response = f"{get_all_locations()}" 
-
-    #     # EMPLOYEES RESOURCE 
-    #     if resource == "employees": 
-    #         if id is not None: 
-    #             response = f"{get_single_employee(id)}" 
-
-    #         else: 
-    #             response = f"{get_all_employees()}" 
-
-    #     # CUSTOMERS RESOURCE
-    #     if resource == "customers": 
-    #         if id is not None: 
-    #             response = f"{get_single_customer(id)}" 
-
-    #         else: 
-    #             response = f"{get_all_customers()}" 
-
-    #     self.wfile.write(response.encode()) 
-
 
     # Here's a method on the class that overrides the parent's method.
     # It handles any POST request.
