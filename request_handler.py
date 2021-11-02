@@ -1,8 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from animals import get_all_animals, get_single_animal, create_animal, delete_animal, update_animal, get_animals_by_locationId
+from animals import get_all_animals, get_single_animal, create_animal, delete_animal, update_animal, get_animals_by_locationId, get_animals_by_status
 from locations import get_all_locations, get_single_location, create_location, delete_location, update_location
 from customers import get_all_customers, get_single_customer, create_customer, delete_customer, update_customer, get_customers_by_email
-from employees import get_all_employees, get_single_employee, create_employee, delete_employee, update_employee
+from employees import get_all_employees, get_single_employee, create_employee, delete_employee, update_employee, get_employees_by_locationId
 import json
 
 # Here's a class. It inherits from another class.
@@ -89,15 +89,28 @@ class HandleRequests(BaseHTTPRequestHandler):
             # Is the resource `customers` and was there a
             # query parameter that specified the customer
             # email as a filtering value?
-            # http://localhost:8088/customers?email=jenna@solis.com
-            # http://localhost:8088/animals?location_id=1
+
+            # THE FOLLOWING WORK IN POSTMAN (Book 1, Ch. 10):
+            # http://localhost:8088/customers?email=jenna@solis.com 
+            # http://localhost:8088/animals?location_id=1 
+            # http://localhost:8088/employees?location_id=1
+            # http://localhost:8088/animals?status=Treatment
 
 
             if key == "email" and resource == "customers":
                 response = get_customers_by_email(value)
 
             elif key == "location_id" and resource == "animals": #must use the exact key name from URL!
-                response = get_animals_by_locationId(value)
+                response = get_animals_by_locationId(value) 
+
+            elif key == "location_id" and resource == "employees": #must use the exact key name from URL!
+                response = get_employees_by_locationId(value) 
+
+            elif key == "location_id" and resource == "employees": #must use the exact key name from URL!
+                response = get_employees_by_locationId(value) 
+
+            elif key == "status" and resource == "animals": #must use the exact key name from URL!
+                response = get_animals_by_status(value) 
             
         self.wfile.write(response.encode())
 
