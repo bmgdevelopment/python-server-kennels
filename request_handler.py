@@ -188,10 +188,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
 
 
-    # Here's a method on the class that overrides the parent's method.
-    # It handles any PUT request.
     def do_PUT(self):
-        self._set_headers(204)
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
         post_body = json.loads(post_body)
@@ -199,42 +196,18 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Parse the URL
         (resource, id) = self.parse_url(self.path)
 
+        success = False
 
-        # EDIT/DELETE ANIMAL FROM LIST
-        # -----------------------------
-        # Delete a single animal from the list
         if resource == "animals":
-            update_animal(id, post_body)
+            success = update_animal(id, post_body)
+        # rest of the elif's
 
-        # Encode the new animal and send in response
-            self.wfile.write("".encode())
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
 
-        # EDIT/DELETE CUSTOMER FROM LIST
-        # -----------------------------
-        # Delete a single customer from the list
-        if resource == "customers":
-            update_customer(id, post_body)
-
-        # Encode the new customer and send in response
-            self.wfile.write("".encode())
-
-        # EDIT/DELETE EMPLOYEE FROM LIST
-        # -----------------------------
-        # Delete a single employee from the list
-        if resource == "employees":
-            update_employee(id, post_body)
-
-        # Encode the new employee and send in response
-            self.wfile.write("".encode())
-
-        # EDIT/DELETE LOCATION FROM LIST
-        # -----------------------------
-        # Delete a single location from the list
-        if resource == "locations":
-            update_location(id, post_body)
-
-        # Encode the new location and send in response
-            self.wfile.write("".encode())
+        self.wfile.write("".encode())
 
 
     def do_DELETE(self):
