@@ -4,6 +4,7 @@ import sqlite3
 import json
 
 from models import Animal
+from models import Customer
 from models import Location
 
 ANIMALS = [
@@ -41,21 +42,6 @@ ANIMALS = [
     }
 ]
 
-
-# Function with a single parameter
-# def get_single_animal(id):
-#     # Variable to hold the found animal, if it exists
-#     requested_animal = None
-
-#     # Iterate the ANIMALS list above. Very similar to the
-#     # for..of loops you used in JavaScript.
-#     for animal in ANIMALS:
-#         # Dictionaries in Python use [] notation to find a key
-#         # instead of the dot notation that JavaScript used.
-#         if animal["id"] == id:
-#             requested_animal = animal
-
-#     return requested_animal
 
 def get_single_animal(id):
     with sqlite3.connect("./kennel.db") as conn:
@@ -154,6 +140,12 @@ def get_all_animals():
 
             # Add the dictionary representation of the location to the animal
             animal.location = location.__dict__
+
+            # Create a Customer instance from the current row
+            customer = Customer(row['id'], row['customer_name'], row['customer_address'])
+
+            # Add the dictionary representation of the customer to the animal
+            animal.customer = customer.__dict__
 
             # Add the dictionary representation of the animal to the list
             animals.append(animal.__dict__)
