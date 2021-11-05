@@ -5,6 +5,7 @@ class Employee():
         self.name = name
         self.address = address
         self.location_id = location_id
+        self.location = None
         
 # TypeError: __init__() takes 4 positional arguments but 5 were given
 # needed location_id to resemble the same spelling as within the kennel.sql

@@ -68,6 +68,7 @@ SELECT
 FROM animal a
 WHERE a.id = 4
 
+
 SELECT
     a.id,
     a.name,
@@ -85,3 +86,14 @@ JOIN Location l
 JOIN Customer c
 	ON c.id = a.customer_id
 
+
+SELECT
+	e.id,
+	e.name,
+	e.address,
+	e.location_id,
+	l.name location_name,
+	l.address location_address
+FROM Employee e
+JOIN Location l
+	ON l.id = e.location_id

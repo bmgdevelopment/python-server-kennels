@@ -83,25 +83,6 @@ def get_all_animals():
         # Just use these. It's a Black Box.
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
-
-        #     a.id,
-        #     a.name,
-        #     a.breed,
-        #     a.status,
-        #     a.location_id,
-        #     a.customer_id
-        # FROM animal a
-        #     a.id,
-        #     a.name,
-        #     a.breed,
-        #     a.status,
-        #     a.location_id,
-        #     a.customer_id,
-        #     l.name location_name,
-        #     l.address location_address
-        # FROM Animal a
-        # JOIN Location l
-        # ON l.id = a.location_id
         
         # Write the SQL query to get the information you want
         db_cursor.execute("""
