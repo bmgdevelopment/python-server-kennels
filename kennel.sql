@@ -97,3 +97,4 @@ SELECT
 FROM Employee e
 JOIN Location l
 	ON l.id = e.location_id
+
