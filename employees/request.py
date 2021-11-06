@@ -6,6 +6,7 @@ import json
 
 from models import Employee
 from models import Location
+from models import Animal
 
 EMPLOYEES = [
     {
@@ -83,11 +84,8 @@ def get_all_employees():
             e.name,
             e.address,
             e.location_id,
-            l.name location_name,
-            l.address location_address
+            e.animal_id   
         FROM Employee e
-        JOIN Location l
-        ON l.id = e.location_id
         """)
 
         # Initialize an empty list to hold all animal representations
@@ -103,13 +101,19 @@ def get_all_employees():
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
             # Employee class above.
-            employee = Employee(row['id'], row['name'], row['address'], row['location_id'])
+            employee = Employee(row['id'], row['name'], row['address'], row['location_id'], row['animal_id'])
 
-           # Create a Location instance from the current row
-            location = Location(row['id'], row['location_name'], row['location_address'])
+          #  # Create a Location instance from the current row
+          #   location = Location(row['id'], row['location_name'], row['location_address'])
 
-            # Add the dictionary representation of the location to the animal
-            employee.location = location.__dict__
+          #   # Add the dictionary representation of the location to the animal
+          #   employee.location = location.__dict__
+
+          #  # Create an Animal instance from the current row
+          #   animal = Animal(row['id'], row['name'], row['breed'], row['status'], row['location_id'], row['customer_id'])
+
+          #   # Add the dictionary representation of the animal to the animal
+          #   employee.animal = animal.__dict__
 
             employees.append(employee.__dict__)
 
@@ -119,16 +123,28 @@ def get_all_employees():
 
 # CREATE AN EMPLOYEE
 # -------------------
-def create_employee(employee):
-  max_id = EMPLOYEES[-1]["id"]
+def create_employee(new_employee):
+    with sqlite3.connect("./kennel.db") as conn:
+            db_cursor = conn.cursor()
 
-  new_id = max_id + 1
+            db_cursor.execute("""
+            INSERT INTO Employee
+                ( name, address, location_id, animal_id )
+            VALUES
+                ( ?, ?, ?, ? );
+            """, (new_employee['name'], new_employee['address'], new_employee['location_id'], new_employee['animal_id'] ))
 
-  employee["id"] = new_id
+            # The `lastrowid` property on the cursor will return
+            # the primary key of the last thing that got added to
+            # the database.
+            id = db_cursor.lastrowid
 
-  EMPLOYEES.append(employee)
+            # Add the `id` property to the animal dictionary that
+            # was sent by the client so that the client sees the
+            # primary key in the response.
+            new_employee['id'] = id
 
-  return employee
+    return json.dumps(new_employee)
 
   
 # DELETE AN EMPLOYEE
