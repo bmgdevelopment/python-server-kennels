@@ -100,3 +100,7 @@ JOIN Location l
 	ON l.id = e.location_id
 
 SELECT * FROM Employee;
+
+DELETE FROM Animal WHERE status LIKE '%Need%'
+
+ALTER TABLE Employee ADD COLUMN 'animal_id' INTEGER NOT NULL

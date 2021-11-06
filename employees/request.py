@@ -54,7 +54,8 @@ def get_single_employee(id):
             a.id,
             a.name,
             a.address,
-            a.location_id
+            a.location_id,
+            a.animal_id
         FROM employee a
         WHERE a.id = ?
         """, (id, ))
@@ -64,7 +65,7 @@ def get_single_employee(id):
 
         # Create an employee instance from the current row
         employee = Employee(data['id'], data['name'], data['address'],
-                        data['location_id'])
+                        data['location_id'], data['animal_id'])
 
         return json.dumps(employee.__dict__)
 
@@ -84,8 +85,18 @@ def get_all_employees():
             e.name,
             e.address,
             e.location_id,
-            e.animal_id   
+            e.animal_id,
+            l.name location_name,
+            l.address location_address,
+            a.name animal_name,
+            a.breed,
+            a.customer_id,
+            a.status
         FROM Employee e
+        JOIN Location l
+        ON l.id = e.location_id
+        JOIN Animal a
+        ON a.id = e.animal_id
         """)
 
         # Initialize an empty list to hold all animal representations
@@ -103,17 +114,17 @@ def get_all_employees():
             # Employee class above.
             employee = Employee(row['id'], row['name'], row['address'], row['location_id'], row['animal_id'])
 
-          #  # Create a Location instance from the current row
-          #   location = Location(row['id'], row['location_name'], row['location_address'])
+           # Create a Location instance from the current row
+            location = Location(row['location_id'], row['location_name'], row['location_address'])
 
-          #   # Add the dictionary representation of the location to the animal
-          #   employee.location = location.__dict__
+            # Add the dictionary representation of the location to the animal
+            employee.location = location.__dict__
 
-          #  # Create an Animal instance from the current row
-          #   animal = Animal(row['id'], row['name'], row['breed'], row['status'], row['location_id'], row['customer_id'])
+           # Create an Animal instance from the current row
+            animal = Animal(row['animal_id'], row['animal_name'], row['breed'], row['status'], row['location_id'], row['customer_id'])
 
-          #   # Add the dictionary representation of the animal to the animal
-          #   employee.animal = animal.__dict__
+            # Add the dictionary representation of the animal to the animal
+            employee.animal = animal.__dict__
 
             employees.append(employee.__dict__)
 
@@ -125,24 +136,24 @@ def get_all_employees():
 # -------------------
 def create_employee(new_employee):
     with sqlite3.connect("./kennel.db") as conn:
-            db_cursor = conn.cursor()
+        db_cursor = conn.cursor()
 
-            db_cursor.execute("""
-            INSERT INTO Employee
-                ( name, address, location_id, animal_id )
-            VALUES
-                ( ?, ?, ?, ? );
-            """, (new_employee['name'], new_employee['address'], new_employee['location_id'], new_employee['animal_id'] ))
+        db_cursor.execute("""
+        INSERT INTO Employee
+            ( name, address, location_id, animal_id )
+        VALUES
+            ( ?, ?, ?, ? );
+        """, (new_employee['name'], new_employee['address'], new_employee['location_id'], new_employee['animal_id'], ))
 
-            # The `lastrowid` property on the cursor will return
-            # the primary key of the last thing that got added to
-            # the database.
-            id = db_cursor.lastrowid
+        # The `lastrowid` property on the cursor will return
+        # the primary key of the last thing that got added to
+        # the database.
+        id = db_cursor.lastrowid
 
-            # Add the `id` property to the animal dictionary that
-            # was sent by the client so that the client sees the
-            # primary key in the response.
-            new_employee['id'] = id
+        # Add the `id` property to the animal dictionary that
+        # was sent by the client so that the client sees the
+        # primary key in the response.
+        new_employee['id'] = id
 
     return json.dumps(new_employee)
 
